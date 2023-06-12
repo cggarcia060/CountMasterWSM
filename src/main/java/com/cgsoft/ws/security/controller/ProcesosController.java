@@ -2,6 +2,7 @@ package com.cgsoft.ws.security.controller;
 
 import com.cgsoft.ws.dto.Mensaje;
 import com.cgsoft.ws.security.dto.ProcesoDto;
+import com.cgsoft.ws.security.dto.RequestContainer;
 import com.cgsoft.ws.security.entity.Proceso;
 import com.cgsoft.ws.security.service.ProcesoService;
 import jakarta.validation.Valid;
@@ -21,9 +22,9 @@ public class ProcesosController {
     @Autowired
     ProcesoService procesoService;
 
-    @GetMapping("list")
-    public ResponseEntity<List<Proceso>> list(){
-        return ResponseEntity.ok(procesoService.listProceso());
+    @PostMapping("list")
+    public ResponseEntity<List<Proceso>> list(@RequestBody Proceso proceso){
+        return ResponseEntity.ok(procesoService.listProceso(proceso));
     }
 
     @PostMapping("save")

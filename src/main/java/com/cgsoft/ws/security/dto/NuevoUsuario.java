@@ -1,5 +1,7 @@
 package com.cgsoft.ws.security.dto;
 
+import com.cgsoft.ws.security.entity.Proceso;
+import com.cgsoft.ws.security.entity.Rol;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -22,9 +24,9 @@ public class NuevoUsuario {
     private String email;
     @NotBlank (message = "la contraseña es obligatoria")
     private String password;
-    private Set<Integer> roles = new HashSet<>();
+    private Set<Rol> roles = new HashSet<>();
 
-    private Set<Integer> procesos = new HashSet<>();
+    private Set<Proceso> procesos = new HashSet<>();
 
 
     public String getNombre() {
@@ -67,19 +69,19 @@ public class NuevoUsuario {
         this.password = password;
     }
 
-    public Set<Integer> getRoles() {
+    public Set<Rol> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Integer> roles) {
+    public void setRoles(Set<Rol> roles) {
         this.roles = roles;
     }
 
-    public Set<Integer> getProcesos() {
+    public Set<Proceso> getProcesos() {
         return procesos;
     }
 
-    public void setProcesos(Set<Integer> procesos) {
+    public void setProcesos(Set<Proceso> procesos) {
         this.procesos = procesos;
     }
 

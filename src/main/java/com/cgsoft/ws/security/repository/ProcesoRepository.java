@@ -5,6 +5,7 @@ import com.cgsoft.ws.security.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,5 +19,7 @@ public interface ProcesoRepository  extends JpaRepository<Proceso,Integer> {
     boolean existsByCodigo(String codigo);
     boolean existsByNombreAndIdNot(String nombre,int id);
     boolean existsByCodigoAndIdNot(String codigo,int id);
+
+    List<Proceso> findProcesoByNombreNot(String nombre);
 
 }

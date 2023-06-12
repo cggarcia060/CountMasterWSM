@@ -14,6 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario ,Long> {
 
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
 
+    List<Usuario> findAllByProcesosAndNombreUsuarioNot(Proceso procesos,String nombreUsuario);
     List<Usuario> findAllByProcesos(Proceso procesos);
     Optional<Usuario> findByTokenPassword(String tokenPassword);
     Optional<Usuario> findByNombreUsuarioOrEmail(String nombreUsuario, String email);

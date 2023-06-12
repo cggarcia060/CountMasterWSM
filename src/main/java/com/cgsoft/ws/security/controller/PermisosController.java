@@ -3,6 +3,7 @@ package com.cgsoft.ws.security.controller;
 
 import com.cgsoft.ws.dto.Mensaje;
 import com.cgsoft.ws.security.dto.PermisoDto;
+import com.cgsoft.ws.security.dto.RequestContainer;
 import com.cgsoft.ws.security.dto.RolAndProcesoDto;
 import com.cgsoft.ws.security.entity.Permisos;
 import com.cgsoft.ws.security.entity.Proceso;
@@ -41,9 +42,10 @@ public class PermisosController {
     public ResponseEntity<Map<String, String>> detbyProceso(@Valid @RequestBody RolAndProcesoDto rolAndProcesoDto) throws Exception {
         return  ResponseEntity.ok(permisosService.getRolesByProceso(rolAndProcesoDto));
     }
-    @GetMapping("/listAll")
-    public ResponseEntity<List<Permisos>> getAll(){
-        return  ResponseEntity.ok(permisosService.listAll());
+    @PostMapping("/list")
+    public ResponseEntity<List<Permisos>> getAll(@RequestBody RequestContainer requestContainer){
+
+        return  ResponseEntity.ok(permisosService.listAll(requestContainer));
     }
     @PostMapping("/save")
     public ResponseEntity<Mensaje> save(@Valid @RequestBody PermisoDto permisoDto){

@@ -1,6 +1,7 @@
 package com.cgsoft.ws.security.controller;
 
 import com.cgsoft.ws.dto.Mensaje;
+import com.cgsoft.ws.security.dto.RequestContainer;
 import com.cgsoft.ws.security.dto.RolDto;
 import com.cgsoft.ws.security.entity.Rol;
 import com.cgsoft.ws.security.service.RolService;
@@ -19,9 +20,9 @@ public class RolController {
     @Autowired
     RolService rolService;
 
-    @GetMapping("list")
-    public ResponseEntity<List<Rol>> getRoles(){
-     return  ResponseEntity.ok(rolService.getRoles());
+    @PostMapping("list")
+    public ResponseEntity<List<Rol>> getRoles(@RequestBody Rol rol){
+     return  ResponseEntity.ok(rolService.getRoles(rol));
     }
 
 

@@ -25,6 +25,43 @@ public class PermisoDto {
     private boolean proveedores;
     private boolean administracion;
 
+    private boolean administracion_proceso;
+    private boolean administracion_roles;
+    private boolean administracion_usuarios;
+    private boolean administracion_permisos;
+
+    public boolean isAdministracion_proceso() {
+        return administracion_proceso;
+    }
+
+    public void setAdministracion_proceso(boolean administracion_proceso) {
+        this.administracion_proceso = administracion_proceso;
+    }
+
+    public boolean isAdministracion_roles() {
+        return administracion_roles;
+    }
+
+    public void setAdministracion_roles(boolean administracion_roles) {
+        this.administracion_roles = administracion_roles;
+    }
+
+    public boolean isAdministracion_usuarios() {
+        return administracion_usuarios;
+    }
+
+    public void setAdministracion_usuarios(boolean administracion_usuarios) {
+        this.administracion_usuarios = administracion_usuarios;
+    }
+
+    public boolean isAdministracion_permisos() {
+        return administracion_permisos;
+    }
+
+    public void setAdministracion_permisos(boolean administracion_permisos) {
+        this.administracion_permisos = administracion_permisos;
+    }
+
     public PermisoDto() {
     }
 

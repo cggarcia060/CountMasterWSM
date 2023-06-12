@@ -2,6 +2,7 @@ package com.cgsoft.ws.security.service;
 
 import com.cgsoft.ws.dto.Mensaje;
 import com.cgsoft.ws.exceptions.CustomException;
+import com.cgsoft.ws.security.dto.RequestContainer;
 import com.cgsoft.ws.security.dto.RolDto;
 import com.cgsoft.ws.security.entity.Rol;
 import com.cgsoft.ws.security.enums.RolNombre;
@@ -22,8 +23,12 @@ public class RolService {
     RolRepository rolRepository;
 
 
-    public List<Rol> getRoles(){
-        return rolRepository.findAll();
+    public List<Rol> getRoles(Rol rol){
+        if (rol.getRolNombre().equals("ROLE_SUPERADMIN")){
+            return rolRepository.findAll();
+        }else{
+            return  rolRepository.findByRolNombreNot("ROLE_SUPERADMIN");
+        }
     }
     public Rol getByRolNombre(String rolNombre){
        return rolRepository.findByRolNombre(rolNombre)

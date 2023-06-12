@@ -4,7 +4,9 @@ package com.cgsoft.ws.security.service;
 import com.cgsoft.ws.dto.Mensaje;
 import com.cgsoft.ws.exceptions.CustomException;
 import com.cgsoft.ws.security.dto.ProcesoDto;
+import com.cgsoft.ws.security.dto.RequestContainer;
 import com.cgsoft.ws.security.entity.Proceso;
+import com.cgsoft.ws.security.entity.Rol;
 import com.cgsoft.ws.security.repository.ProcesoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,13 @@ public class ProcesoService {
     @Autowired
     ProcesoRepository procesoRepository;
 
-    public List<Proceso> listProceso(){
-       return procesoRepository.findAll();
+    public List<Proceso> listProceso(Proceso proceso){
+        if (proceso.getNombre().equals("CountMaster")){
+            return procesoRepository.findAll();
+        }else{
+            return procesoRepository.findProcesoByNombreNot("CountMaster");
+        }
+
     }
 
     public Proceso  getProcesoByNombre(String nombre){

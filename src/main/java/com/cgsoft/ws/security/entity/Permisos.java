@@ -43,5 +43,9 @@ public class Permisos {
     private boolean configuracion;
     private boolean proveedores;
     private boolean administracion;
+    private boolean administracion_proceso;
+    private boolean administracion_roles;
+    private boolean administracion_usuarios;
+    private boolean administracion_permisos;
 
 }

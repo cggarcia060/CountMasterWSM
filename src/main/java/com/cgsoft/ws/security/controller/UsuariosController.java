@@ -1,8 +1,10 @@
 package com.cgsoft.ws.security.controller;
 
 import com.cgsoft.ws.dto.Mensaje;
+import com.cgsoft.ws.security.dto.RequestContainer;
 import com.cgsoft.ws.security.dto.UsuarioDto;
 import com.cgsoft.ws.security.entity.Proceso;
+import com.cgsoft.ws.security.entity.Rol;
 import com.cgsoft.ws.security.entity.Usuario;
 import com.cgsoft.ws.security.service.ProcesoService;
 import com.cgsoft.ws.security.service.UsuarioService;
@@ -34,10 +36,8 @@ public class UsuariosController {
     }
 
     @PostMapping("/usuarioProcess")
-    public ResponseEntity<Map<String, String>> getUsuariosByProcess(@RequestBody Map<String, Integer> json) throws JsonProcessingException {
-        Proceso proceso= procesoService.getProcesoById(json.get("procesoId"));
-        return  ResponseEntity.ok( usuarioService.getUsuariosByProcess(proceso));
-
+    public ResponseEntity<Map<String, String>> getUsuariosByProcess(@RequestBody RequestContainer request) throws JsonProcessingException {
+        return  ResponseEntity.ok( usuarioService.getUsuariosByProcess(request));
     }
 
     @PostMapping("/delete")

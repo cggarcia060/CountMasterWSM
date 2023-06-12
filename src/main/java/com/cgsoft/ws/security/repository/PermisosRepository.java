@@ -20,6 +20,11 @@ public interface PermisosRepository extends JpaRepository<Permisos,Integer> {
     List<Permisos> findByRolAndProceso(boolean estado);
 */
     List<Permisos> findByProceso_id(@Param("procesoId") int procesoId);
+
+    List<Permisos> findByProcesoAndRolNot(Proceso proceso ,Rol rol);
+    List<Permisos> findByProceso(Proceso proceso );
+
+
     boolean existsByRolAndProceso(Rol rol, Proceso proceso);
     boolean existsByRolAndProcesoAndIdNot(Rol rol, Proceso proceso,int id);
 

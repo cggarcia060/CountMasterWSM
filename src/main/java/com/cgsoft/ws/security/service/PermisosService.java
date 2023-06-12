@@ -6,6 +6,7 @@ import com.cgsoft.ws.entity.Categoria;
 import com.cgsoft.ws.exceptions.CustomException;
 import com.cgsoft.ws.security.dto.PermisoDto;
 import com.cgsoft.ws.security.dto.ProcesoDto;
+import com.cgsoft.ws.security.dto.RequestContainer;
 import com.cgsoft.ws.security.dto.RolAndProcesoDto;
 import com.cgsoft.ws.security.entity.Permisos;
 import com.cgsoft.ws.security.entity.Proceso;
@@ -45,8 +46,13 @@ public class PermisosService  {
       return   permisosRepository.findById(id)
                 .orElseThrow(()-> new CustomException(HttpStatus.NOT_FOUND,"no se encontro permisos"));
     }
-    public  List<Permisos>  listAll() {
-        return permisosRepository.findAll();
+    public  List<Permisos>  listAll(RequestContainer requestContainer) {
+        if (requestContainer.getRol().getRolNombre().equals("ROLE_SUPERADMIN")){
+            return  permisosRepository.findByProceso(requestContainer.getProceso());
+        }else{
+           Rol rol= rolService.getByRolNombre("ROLE_SUPERADMIN");
+            return permisosRepository.findByProcesoAndRolNot(requestContainer.getProceso(),rol);
+        }
     }
     public Map<String,String> getRolesByProceso(RolAndProcesoDto rolAndProcesoDto){
         try {
@@ -84,6 +90,10 @@ public class PermisosService  {
     public Mensaje save(PermisoDto permisoDto){
         if(permisosRepository.existsByRolAndProceso(permisoDto.getRol(),permisoDto.getProceso()))
             throw  new CustomException(HttpStatus.NOT_FOUND,"Ese permiso con proceso y rol ya existe");
+        if(permisoDto.getProceso() ==null)
+            throw  new CustomException(HttpStatus.NOT_FOUND,"Permiso es requerido");
+        if(permisoDto.getRol() ==null)
+            throw  new CustomException(HttpStatus.NOT_FOUND,"Rol es requerido");
         Permisos permiso=new Permisos();
         permiso.setRol(permisoDto.getRol());
         permiso.setProceso(permisoDto.getProceso());
@@ -105,7 +115,10 @@ public class PermisosService  {
     public Mensaje update(PermisoDto permisoDto){
         if(permisosRepository.existsByRolAndProcesoAndIdNot(permisoDto.getRol(),permisoDto.getProceso(),permisoDto.getId()))
             throw  new CustomException(HttpStatus.NOT_FOUND,"Ese permiso con proceso y rol ya existe");
-
+        if(permisoDto.getProceso() ==null)
+            throw  new CustomException(HttpStatus.NOT_FOUND,"Permiso es requerido");
+        if(permisoDto.getRol() ==null)
+            throw  new CustomException(HttpStatus.NOT_FOUND,"Rol es requerido");
         Permisos permiso=getPermisos(permisoDto.getId());
         permiso.setRol(permisoDto.getRol());
         permiso.setProceso(permisoDto.getProceso());
@@ -120,6 +133,10 @@ public class PermisosService  {
         permiso.setVentas(permisoDto.isVentas());
         permiso.setUsuarios(permisoDto.isUsuarios());
         permiso.setProductos(permisoDto.isProductos());
+        permiso.setAdministracion_permisos(permisoDto.isAdministracion_permisos());
+        permiso.setAdministracion_proceso(permisoDto.isAdministracion_proceso());
+        permiso.setAdministracion_roles(permisoDto.isAdministracion_roles());
+        permiso.setAdministracion_usuarios(permisoDto.isAdministracion_usuarios());
         permisosRepository.save(permiso);
         return  new Mensaje("Permiso editado exitosamente");
     }

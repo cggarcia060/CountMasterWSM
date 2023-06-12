@@ -5,10 +5,7 @@ package com.cgsoft.ws.security.service;
 import com.cgsoft.ws.dto.Mensaje;
 import com.cgsoft.ws.exceptions.CustomException;
 import com.cgsoft.ws.security.config.BeansConfig;
-import com.cgsoft.ws.security.dto.JwtDto;
-import com.cgsoft.ws.security.dto.LoginUsuario;
-import com.cgsoft.ws.security.dto.NuevoUsuario;
-import com.cgsoft.ws.security.dto.UsuarioDto;
+import com.cgsoft.ws.security.dto.*;
 import com.cgsoft.ws.security.entity.Proceso;
 import com.cgsoft.ws.security.entity.Rol;
 import com.cgsoft.ws.security.entity.Usuario;
@@ -111,18 +108,9 @@ public class UsuarioService {
             throw new CustomException(HttpStatus.BAD_REQUEST, "ese email de usuario ya existe");
         Usuario usuario =
                 Usuario.builder().nombre(nuevoUsuario.getNombre()).apellido(nuevoUsuario.getApellido()).nombreUsuario(nuevoUsuario.getNombreUsuario())
-                        .email(nuevoUsuario.getEmail()).identificacion(nuevoUsuario.getIdentificacion())
+                        .email(nuevoUsuario.getEmail()).roles(nuevoUsuario.getRoles())
+                        .procesos(nuevoUsuario.getProcesos()).identificacion(nuevoUsuario.getIdentificacion())
                         .password(passwordEncoder.encode(nuevoUsuario.getPassword())).build();
-        Set<Rol> roles = new HashSet<>();
-        Set<Proceso> procesos = new HashSet<>();
-        for (Integer id :  nuevoUsuario.getProcesos()) {
-            procesos.add(procesoService.getProcesoById(id));
-        }
-        for (Integer id :  nuevoUsuario.getRoles()) {
-            roles.add(rolService.getRolById(id));
-        }
-        usuario.setRoles(roles);
-        usuario.setProcesos(procesos);
         usuarioRepository.save(usuario);
         return new Mensaje(usuario.getNombreUsuario() + " ha sido creado");
     }
@@ -140,9 +128,18 @@ public class UsuarioService {
         }
 
     }
-    public  Map<String, String> getUsuariosByProcess(Proceso procesos) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-            String jsonString=objectMapper.writeValueAsString(usuarioRepository.findAllByProcesos(procesos));
+    public  Map<String, String> getUsuariosByProcess(RequestContainer requestContainer) throws JsonProcessingException {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString;
+
+            if (requestContainer.getRol().getRolNombre().equals("ROLE_SUPERADMIN")){
+                jsonString=objectMapper.writeValueAsString(
+                        usuarioRepository.findAllByProcesos(requestContainer.getProceso()));
+            }else{
+                jsonString=objectMapper.writeValueAsString(
+                        usuarioRepository.findAllByProcesosAndNombreUsuarioNot(requestContainer.getProceso(),"superadmin"));
+            }
+
             try{
                 Map<String,String> usuarios=new HashMap<String,String>();
                 usuarios.put("usuarios", ScriptionElement.encrypt(jsonString));
@@ -169,17 +166,17 @@ public class UsuarioService {
             throw new CustomException(HttpStatus.BAD_REQUEST, "ese nombre de usuario ya existe");
         if(usuarioRepository.existsByEmailAndIdNot(dto.getEmail(), dto.getId()))
             throw new CustomException(HttpStatus.BAD_REQUEST, "ese email de usuario ya existe");
+        if (dto.getProcesos().isEmpty())
+            throw new CustomException(HttpStatus.BAD_REQUEST, "El proceso es obligatorio");
+        if (dto.getRoles().isEmpty())
+            throw new CustomException(HttpStatus.BAD_REQUEST, "El rol es obligatorio");
         Usuario usuario=getUsuarioById(dto.getId());
         usuario.setNombreUsuario(dto.getNombreUsuario());
         usuario.setApellido(dto.getApellido());
         usuario.setNombre(dto.getNombre());
         usuario.setEmail(dto.getEmail());
-        Set<Rol> roles = new HashSet<>();
-        for (Integer id :  dto.getRoles()) {
-            roles.add(rolService.getRolById(id));
-        }
-
-        usuario.setRoles(roles);
+        usuario.setProcesos(dto.getProcesos());
+        usuario.setRoles(dto.getRoles());
         usuarioRepository.save(usuario);
         return new Mensaje(usuario.getNombreUsuario() + " ha sido actualizado");
     }

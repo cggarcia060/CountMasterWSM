@@ -1,5 +1,7 @@
 package com.cgsoft.ws.security.dto;
 
+import com.cgsoft.ws.security.entity.Proceso;
+import com.cgsoft.ws.security.entity.Rol;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -18,7 +20,8 @@ public class UsuarioDto {
     @Email(message = "la dirección de email no válida")
     @NotBlank(message = "el email es obligatorio")
     private String email;
-    private Set<Integer> roles = new HashSet<>();
+    private Set<Rol> roles = new HashSet<>();
+    private Set<Proceso> procesos = new HashSet<>();
 
 
     public Long getId() {
@@ -61,12 +64,19 @@ public class UsuarioDto {
         this.email = email;
     }
 
-    public Set<Integer> getRoles() {
+    public Set<Rol> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Integer> roles) {
+    public void setRoles(Set<Rol> roles) {
         this.roles = roles;
     }
 
+    public Set<Proceso> getProcesos() {
+        return procesos;
+    }
+
+    public void setProcesos(Set<Proceso> procesos) {
+        this.procesos = procesos;
+    }
 }
