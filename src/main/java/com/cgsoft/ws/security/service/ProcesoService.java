@@ -21,6 +21,9 @@ public class ProcesoService {
     @Autowired
     ProcesoRepository procesoRepository;
 
+
+
+
     public List<Proceso> listProceso(Proceso proceso){
         if (proceso.getNombre().equals("CountMaster")){
             return procesoRepository.findAll();

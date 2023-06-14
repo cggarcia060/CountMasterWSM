@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping(path = "/categoria")
 @CrossOrigin
 public class CategoriaController {
-
+/*
     @Autowired
     CategoriaServiceImpl categoriaService;
 
@@ -45,5 +45,5 @@ public class CategoriaController {
         return  ResponseEntity.ok(categoriaService.delete(id));
     }
 
-
+*/
 }

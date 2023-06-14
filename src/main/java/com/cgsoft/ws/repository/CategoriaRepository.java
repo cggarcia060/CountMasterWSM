@@ -10,11 +10,11 @@ import java.util.Optional;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria,Integer> {
-
+/*
     Optional<Categoria> findByNombre(String nombre);
     boolean existsByNombre(String nombre);
 
     @Query(value = "SELECT * FROM categorias WHERE estado=:estado", nativeQuery=true)
-    List<Categoria> findByEstado(boolean estado);
+    List<Categoria> findByEstado(boolean estado);*/
 
 }

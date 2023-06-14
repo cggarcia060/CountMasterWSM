@@ -16,8 +16,8 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CategoriaServiceImpl implements CategoriaService {
-
+public class CategoriaServiceImpl  {
+/*
     @Autowired
     CategoriaRepository categoriaRepository;
 
@@ -73,5 +73,5 @@ public class CategoriaServiceImpl implements CategoriaService {
     public Categoria getByNombre(String nombre) {
         return categoriaRepository.findByNombre(nombre)
                 .orElseThrow(()-> new CustomException(HttpStatus.NOT_FOUND,"Esa categoria no existe"));
-    }
+    }*/
 }
